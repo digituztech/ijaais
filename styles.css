@@ -362,6 +362,9 @@ p + p { margin-top: 1rem; }
 }
 
 /* --- Header --- */
+.header_top .header__nav a {
+  color: #fff !important; font-size: small !important;
+}
 .header {
   background-color: var(--color-white);
   box-shadow: var(--shadow-sm);
@@ -412,7 +415,7 @@ p + p { margin-top: 1rem; }
 .header__nav {
   display: none;
   align-items: center;
-  gap: 32px;
+  gap: 30px;
 }
 
 .header__nav-link {
