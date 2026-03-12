@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manuscript Submission - IJAAIS</title>
+  <meta name="description" content="">
+  <div id="headtag"></div>
+  </head>
+<body>
+<div id="header"></div>
+<!-- Page Hero -->
+<section class="page-hero" style="background-color: #17583a;">
+  <div class="container">
+    <div class="page-hero__breadcrumb">
+      <a href="index.html">Home</a>
+      <i class="fa-solid fa-chevron-right" style="font-size: 0.65rem;"></i>
+      <span>Manuscript Submission</span>
+    </div>
+    <h1>Manuscript Submission</h1>
+    <!-- <p>We built TalentBridge on a simple idea: staffing should be about relationships, not transactions. Sixteen years later, that idea still drives everything we do.</p> -->
+  </div>
+</section>
+<section class="section">
+  <div class="container">
+  <h3 style="padding-bottom: 30px;">Manuscript Submission</h3>
+    <form id="submissionForm">
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" placeholder="Your Full Name" required>
+              </div>
+              <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="Your Email Address" required>
+              </div>
+              <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" placeholder="Your Phone Number" required>
+              </div>
+               <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" placeholder="Title of Manuscript" required>
+              </div>
+            <div class="form-group">
+              <label for="address">Address</label>
+              <textarea id="address" name="address" placeholder="Your Full Address" required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="fileInput">Complete Manuscript in one file</label>
+              <input type="file" id="fileInput" name="fileInput" accept=".pdf,.doc,.docx" required>
+            </div>
+            <button type="submit" class="btn btn--primary btn--lg">Submit! <i class="fa-solid fa-arrow-right"></i></button>
+          </form>
+
+<script>
+const scriptURL = "https://script.google.com/macros/s/AKfycbxFkb0ZhQgfNNWizDrJhSritBsuYOi46KyTdyLj6-0oKFEqGQDdBmA7JIe5yyNZrYJjgg/exec";
+
+document.getElementById("submissionForm").addEventListener("submit", function(e){
+
+  e.preventDefault();
+
+  const file = document.getElementById("fileInput").files[0];
+
+  if(!file){
+    alert("Please upload a file");
+    return;
+  }
+
+  const allowed = [
+    "application/pdf",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "application/msword"
+  ];
+
+  if(!allowed.includes(file.type)){
+    alert("Only PDF or DOCX files allowed");
+    return;
+  }
+
+  if(file.size > 10 * 1024 * 1024){
+    alert("File must be under 10MB");
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = function(){
+
+    const base64 = reader.result.split(",")[1];
+
+    const data = {
+      name: document.querySelector("[name=name]").value,
+      email: document.querySelector("[name=email]").value,
+      phone: document.querySelector("[name=phone]").value,
+      title: document.querySelector("[name=title]").value,
+      address: document.querySelector("[name=address]").value,
+      filename: file.name,
+      filetype: file.type,
+      file: base64
+    };
+
+    fetch(scriptURL,{
+      method:"POST",
+      body: JSON.stringify(data)
+    })
+    .then(res => res.text())
+    .then(msg => {
+      alert("Submission Successful");
+      document.getElementById("submissionForm").reset();
+    })
+    .catch(err => alert("Upload Failed"));
+
+  };
+
+  reader.readAsDataURL(file);
+
+});
+
+</script>
+  </div>
+</section>
+
+
+<div id="footer"></div>
+<script src="custom.js"></script>
+
+</body>
+</html>
